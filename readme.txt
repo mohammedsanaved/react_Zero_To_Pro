@@ -1,1 +1,1 @@
-## 05.5_challenge_accordion_v2
+## 05.5 challenge_accordion_v2
