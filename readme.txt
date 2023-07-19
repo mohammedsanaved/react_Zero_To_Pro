@@ -1,1 +1,1 @@
-##06.0 challenge_tipCalculator
+## 07 miniproject-eat-n-split
