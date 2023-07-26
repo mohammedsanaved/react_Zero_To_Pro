@@ -6,23 +6,34 @@ To explain diffing with a daily life example, let's consider a to-do list applic
 
 Imagine you have a to-do list with the following items:
 
-{'''
-Buy groceries
-Pay bills
-Clean the house
-'''}
+```js
+{
+   Buy groceries
+   Pay bills
+   Clean the house
+}
+```
+
 Now, you want to make some changes to this list and add a new item:
 
-Buy groceries
-Pay rent
-Pay bills
-Clean the house
+```js
+{
+   Buy groceries
+   Pay bills
+   Buy sneakers
+   Clean the house
+}
+```
+
 In the context of React's diffing algorithm, here's how the update process might work:
 
-Virtual DOM: React maintains a virtual representation of the UI, which is a lightweight copy of the actual DOM. Initially, it corresponds to the current to-do list.
+### Virtual DOM:
+
+React maintains a virtual representation of the UI, which is a lightweight copy of the actual DOM. Initially, it corresponds to the current to-do list.
 markdown
 Copy code
-Virtual DOM:
+
+### Virtual DOM:
 
 1. Buy groceries
 2. Pay bills
