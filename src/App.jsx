@@ -12,13 +12,18 @@ function App() {
   };
   const StopWatch = () => {
     clearInterval(stopInterval);
+    setStarted(false);
   };
-  const ResetWatch = () => {};
+  const ResetWatch = () => {
+    setWatch(0);
+    clearInterval(stopInterval);
+    setStarted(false);
+  };
 
   return (
     <>
-      <h1>stopWatch</h1>
-      <p>{watch}</p>
+      <h2>stopWatch</h2>
+      <h4>{watch}</h4>
 
       <button disabled={started} onClick={StartWatch}>
         Start
