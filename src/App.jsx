@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 
 const tempMovieData = [
@@ -225,6 +225,21 @@ function Logo() {
 }
 
 function Search({ query, setQuery }) {
+  const inputEl = useRef(null);
+
+  useEffect(() => {
+    function callback(e) {
+      if (document.activeElement === inputEl.current) return;
+
+      if (e.code === "Enter") {
+        inputEl.current.focus();
+        setQuery("");
+      }
+    }
+    document.addEventListener("keydown", callback);
+
+    return () => document.addEventListener("keydown", callback);
+  }, [setQuery]);
   return (
     <input
       className="search"
@@ -375,6 +390,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
           `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
         );
         const data = await res.json();
+        console.log(data);
         setMovie(data);
         setIsLoading(false);
       }
