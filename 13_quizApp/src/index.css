@@ -98,6 +98,19 @@ h4 {
   font-size: 1.8rem;
   color: var(--color-medium);
 }
+@keyframes rotateAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  /* Apply the keyframe animation */
+  animation: rotateAnimation 5s linear infinite; /* Adjust duration and animation timing as needed */
+}
 
 progress {
   -webkit-appearance: none;
@@ -176,7 +189,7 @@ progress {
   color: var(--color-light);
   border-radius: 100px;
   text-align: center;
-  padding: 2rem 0;
+  padding: 2rem;
   font-size: 2rem;
   font-weight: 500;
   margin-bottom: 1.6rem;
