@@ -1,158 +1,66 @@
-import React, { useEffect, useReducer } from "react";
-import Header from "./components/Header";
-import MainBody from "./components/MainBody";
-import Loader from "./components/Loader";
-import Error from "./components/Error";
-import StartScreen from "./components/StartScreen";
-import Question from "./components/Question";
-import NextButton from "./components/NextButton";
-import Progress from "./components/Progress";
-import FinishScreen from "./components/FinishScreen";
-import Timer from "./components/Timer";
-import Footer from "./components/Footer";
+import "./styles.css";
 
-const SECS_PER_QUESTION = 30;
-const initiatialState = {
-  questions: [],
-  //loading, error,ready, active, finished
-  status: "loading",
-  index: 0,
-  points: 0,
-  answer: null,
-  highscore: 0,
-  secondRemaining: null,
+/*
+INSTRUCTIONS / CONSIDERATIONS:
+
+1. Let's implement a simple bank account! It's similar to the example that I used as an analogy to explain how useReducer works, but it's simplified (we're not using account numbers here)
+
+2. Use a reducer to model the following state transitions: openAccount, deposit, withdraw, requestLoan, payLoan, closeAccount. Use the `initialState` below to get started.
+
+3. All operations (expect for opening account) can only be performed if isActive is true. If it's not, just return the original state object. You can check this right at the beginning of the reducer
+
+4. When the account is opened, isActive is set to true. There is also a minimum deposit amount of 500 to open an account (which means that the balance will start at 500)
+
+5. Customer can only request a loan if there is no loan yet. If that condition is met, the requested amount will be registered in the 'loan' state, and it will be added to the balance. If the condition is not met, just return the current state
+
+6. When the customer pays the loan, the opposite happens: the money is taken from the balance, and the 'loan' will get back to 0. This can lead to negative balances, but that's no problem, because the customer can't close their account now (see next point)
+
+7. Customer can only close an account if there is no loan, AND if the balance is zero. If this condition is not met, just return the state. If the condition is met, the account is deactivated and all money is withdrawn. The account basically gets back to the initial state
+*/
+
+const initialState = {
+  balance: 0,
+  loan: 0,
+  isActive: false,
 };
-function reducer(state, action) {
-  switch (action.type) {
-    case "dataRecived":
-      return {
-        ...state,
-        questions: action.payload,
-        status: "ready",
-      };
-    case "dataFailed":
-      return {
-        ...state,
-        status: "error",
-      };
-    case "start":
-      return {
-        ...state,
-        status: "active",
-        secondRemaining: state.questions.length * SECS_PER_QUESTION,
-      };
-    case "newAnswer":
-      // this is to find the current question we are solving
-      const question = state.questions.at(state.index);
-      return {
-        ...state,
-        answer: action.payload,
-        // if user selected option is same as correctOption then state.points will set to +10 other wise 0
-        points:
-          action.payload === question.correctOption
-            ? state.points + question.points
-            : state.points,
-      };
-    case "nextQuestion":
-      return {
-        ...state,
-        index: state.index + 1,
-        answer: null,
-      };
-    case "finish":
-      return {
-        ...state,
-        status: "finished",
-        highscore:
-          state.points > state.highscore ? state.points : state.highscore,
-      };
-    case "restart":
-      // return {
-      //   ...state,
-      //   status: "ready",
-      //   answer: null,
-      //   points: 0,
-      //   highscore: 0,
-      //   index: 0,
-      // };
-      // Optimize Way
-      return {
-        ...initiatialState,
-        questions: state.questions,
-        status: "ready",
-      };
-    case "tick":
-      return {
-        ...state,
-        secondRemaining: state.secondRemaining - 1,
-        status: state.secondRemaining === 0 ? "finished" : state.status,
-      };
-    default:
-      throw new Error("UKnown Action");
-  }
-}
-const App = () => {
-  const [
-    { questions, status, index, answer, points, highscore, secondRemaining },
-    dispatch,
-  ] = useReducer(reducer, initiatialState);
-  const numQuestion = questions.length;
-  const maxPossiblePoints = questions.reduce(
-    (prev, curr) => prev + curr.points,
-    0
-  );
-  console.log(maxPossiblePoints);
-  useEffect(function () {
-    fetch("http://localhost:8000/questions")
-      .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataRecived", payload: data }))
-      .catch((error) => dispatch({ type: "dataFailed" }));
-  }, []);
+
+export default function App() {
   return (
-    <div className="app">
-      <Header />
-      <MainBody>
-        {status === "loading" && <Loader />}
-        {status === "error" && <Error />}
-        {status === "ready" && (
-          <StartScreen numQuestion={numQuestion} dispatch={dispatch} />
-        )}
-        {status === "active" && (
-          <>
-            <Progress
-              index={index}
-              numQuestion={numQuestion}
-              points={points}
-              maxPossiblePoints={maxPossiblePoints}
-              answer={answer}
-            />
-            <Question
-              question={questions[index]}
-              answer={answer}
-              dispatch={dispatch}
-            />
-            <Footer>
-              <Timer dispatch={dispatch} secondRemaining={secondRemaining} />
-              <NextButton
-                dispatch={dispatch}
-                answer={answer}
-                index={index}
-                numQuestion={numQuestion}
-              />
-            </Footer>
-          </>
-        )}
-        {status === "finished" && (
-          <FinishScreen
-            maxPossiblePoints={maxPossiblePoints}
-            points={points}
-            highscore={highscore}
-            dispatch={dispatch}
-          />
-        )}
-      </MainBody>
+    <div className="App">
+      <h1>useReducer Bank Account</h1>
+      <p>Balance: X</p>
+      <p>Loan: X</p>
+
+      <p>
+        <button onClick={() => {}} disabled={false}>
+          Open account
+        </button>
+      </p>
+      <p>
+        <button onClick={() => {}} disabled={false}>
+          Deposit 150
+        </button>
+      </p>
+      <p>
+        <button onClick={() => {}} disabled={false}>
+          Withdraw 50
+        </button>
+      </p>
+      <p>
+        <button onClick={() => {}} disabled={false}>
+          Request a loan of 5000
+        </button>
+      </p>
+      <p>
+        <button onClick={() => {}} disabled={false}>
+          Pay loan
+        </button>
+      </p>
+      <p>
+        <button onClick={() => {}} disabled={false}>
+          Close account
+        </button>
+      </p>
     </div>
   );
-};
-
-export default App;
+}
