@@ -1,4 +1,5 @@
-import React, { useEffect, useReducer } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useMemo, useReducer } from "react";
 import Header from "./components/Header";
 import MainBody from "./components/MainBody";
 import Loader from "./components/Loader";
@@ -101,13 +102,20 @@ const App = () => {
     (prev, curr) => prev + curr.points,
     0
   );
-  console.log(maxPossiblePoints);
-  useEffect(function () {
-    fetch("http://localhost:8000/questions")
-      .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataRecived", payload: data }))
-      .catch((error) => dispatch({ type: "dataFailed" }));
-  }, []);
+  const data = useMemo(
+    () =>
+      fetch("http://localhost:8000/questions")
+        .then((res) => res.json())
+        .then((data) => dispatch({ type: "dataRecived", payload: data }))
+        .catch((error) => dispatch({ type: "dataFailed" })),
+    []
+  );
+  useEffect(
+    function () {
+      data;
+    },
+    [data]
+  );
   return (
     <div className="app">
       <Header />
