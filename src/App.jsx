@@ -3,7 +3,7 @@
 import { useReducer } from "react";
 
 /*
-INSTRUCTIONS / CONSIDERATIONS:
+INSTRUCTIONS / CONSIDERATIONS: 
 
 1. Let's implement a simple bank account! It's similar to the example that I used as an analogy to explain how useReducer works, but it's simplified (we're not using account numbers here)
 
@@ -51,7 +51,7 @@ function reducer(state, action) {
       if (state.loan > 0 || state.balance !== 0) return state;
       return initialState;
     default:
-      throw new Error("Unkown");
+      throw new Error("Unknown");
   }
 }
 export default function App() {
